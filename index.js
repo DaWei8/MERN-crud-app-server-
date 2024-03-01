@@ -43,16 +43,24 @@ app.get("/getEmployees", (req, res) => {
     .catch((err) => res.json(err));
 });
 
-app.get("/getblog/:id", (req, res) => {
-  BlogModel.findOne(req.params.id)
+app.put("/editblog/:id", (req, res) => {
+  BlogModel.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
     .then((blog) => res.json(blog))
+    .catch((err) => res.json(err));
+});
+
+app.get("/deleteblog/:id", (req, res) => {
+  BlogModel.findOneAndDelete({ _id: req.params.id }, req.body)
+    .then((edittedBlog) => res.json(edittedBlog))
     .catch((err) => res.json(err));
 });
 
 app.post("/createblog", (req, res) => {
   BlogModel.create(req.body)
     .then((blogs) => res.json(blogs))
-    .catch((err) => res.json(err));
+    .catch((err) => {
+      res.json(err);
+    });
 });
 
 app.listen(3001, () => {
